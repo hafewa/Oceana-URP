@@ -255,7 +255,7 @@ Shader "Oceana/OceanSurface"
                     half3 reflection_ws = reflect(viewDir_ws, normal_ws);
                     half roughness = max(1 - sqrt(_Specular), HALF_MIN);
 
-                    color = SurfaceColor(color, varyings.position_ss, uv_ss, normal_ws, _Refraction, _Depth, _DepthPower, _ShallowPower);
+                    color = SurfaceColor(color, varyings.position_ss, varyings.position_cs.w, uv_ss, normal_ws, _Refraction, _Depth, _DepthPower, _ShallowPower);
                     half3 envColor = SAMPLE_TEXTURECUBE(unity_SpecCube0, bilinearRepeatSampler, reflection_ws).rgb;
                     half3 sssColor = sqrt(_MainLightColor.rgb * color);
 

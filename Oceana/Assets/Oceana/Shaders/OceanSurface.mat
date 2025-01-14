@@ -89,7 +89,7 @@ Material:
     - _CoatIntesity: 1.13
     - _ConstRange: 0
     - _Depth: 7
-    - _DepthPower: 0.19
+    - _DepthPower: 1.24
     - _Diffuse: 1
     - _Fade: 1
     - _FadePower: 1
@@ -104,7 +104,7 @@ Material:
     - _IsRednerFoam: 1
     - _LowerStrength: 1
     - _Reflectivity: 1
-    - _Refraction: 0.02
+    - _Refraction: 0.32
     - _Roughness: 0.005
     - _RoughnessContrast: 4.48
     - _SSSFresnel: 2

@@ -33,21 +33,41 @@ half Contrast(half value, half contrast, half midpoint)
     return (value - midpoint) * contrast + midpoint;
 }
 
+void ComputeWaterScene(float z, half depth, float2 uvSS, half3 normalWS, half ior, out half4 colorz) {
+    float zReal = LinearEyeDepth(SampleSceneDepth(uvSS), _ZBufferParams);
+    half3 cReal = SampleSceneColor(uvSS);
+
+    float2 uvRef = uvSS + normalWS.xz * ior * saturate(zReal - z);
+
+    float zRefr = LinearEyeDepth(SampleSceneDepth(uvRef), _ZBufferParams);
+    half3 cRefr = SampleSceneColor(uvRef);
+
+    float zval;
+    float3 color;
+    if(zRefr < z) {
+        zval = zReal;
+        color = cReal;
+    }
+    else {
+        float zLerp = sqrt(saturate(zRefr - z));
+
+        zval = lerp(zReal, zRefr, zLerp);
+        color = lerp(cReal, cRefr, zLerp);
+    }
+
+    colorz = float4(color, sqrt(saturate((zval - z) / depth)));
+}
+
+
 // Lighting
-half3 SurfaceColor(half3 baseColor, float4 screenPosition, float2 uv, half3 normal, half refraction, half depth, half depthPower, half shallowPower)
+half3 SurfaceColor(half3 baseColor, float4 screenPosition, float z, float2 uv, half3 normal, half refraction, half depth, half depthPower, half shallowPower)
 {
-    float2 refract = normal.xz * refraction;
+    half4 colorz;
+    ComputeWaterScene(z, depth, uv, normal, refraction, colorz);
 
-    float linDepth = Linear01Depth(SampleSceneDepth(uv), _ZBufferParams);
-    float linRefracted = Linear01Depth(SampleSceneDepth(uv + refract), _ZBufferParams);
-
-    float depthMask = (1.0 - saturate(linDepth * _ProjectionParams.z - (depth + screenPosition.w) - 1)) * (1.0 - saturate(linRefracted * _ProjectionParams.z - (depth + screenPosition.w) - 1));
-
-    half3 sceneColor = SampleSceneColor(uv + refract).rgb;
-
-    half3 shallowColor = sqrt(sceneColor * baseColor.rgb);
-    half depthGradient = saturate((linRefracted * _ProjectionParams.z - screenPosition.w) / depth);
-    return lerp(baseColor.rgb, lerp(sceneColor, lerp(shallowColor, baseColor.rgb, pow(depthGradient, shallowPower)), pow(depthGradient, depthPower)), saturate(depthMask));
+    half3 shallowColor = sqrt(colorz.rgb * baseColor.rgb);
+    half depthGradient = colorz.w;
+    return lerp(baseColor.rgb, lerp(colorz.rgb, lerp(shallowColor, baseColor.rgb, pow(depthGradient, shallowPower)), pow(depthGradient, depthPower)), saturate(depthGradient));
 }
 
 half3 BackSurfaceColor(half3 baseColor, float2 uv, half3 normal, half3 viewDir, half fresnel, half contrast)
