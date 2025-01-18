@@ -1,12 +1,12 @@
 # Oceana-URP
 Oceana water for Unity URP
 
-![Water_1](https://github.com/user-attachments/assets/94db5237-4c6b-4ef9-a4bf-bc3753aed8b3)
+![Water_0](https://github.com/user-attachments/assets/425f320e-af3d-4391-8b01-8b737c15302a)
 
 This is solution for Unity Universal Render Pipline. Supported version 2023.2+
 Repository contains of source project files and unity package for simpler installation.
 
-![Water_0](https://github.com/user-attachments/assets/425f320e-af3d-4391-8b01-8b737c15302a)
+![Water_1](https://github.com/user-attachments/assets/94db5237-4c6b-4ef9-a4bf-bc3753aed8b3)
 
 Features:
 - Floating bodies
