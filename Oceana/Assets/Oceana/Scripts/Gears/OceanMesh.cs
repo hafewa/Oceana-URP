@@ -32,6 +32,8 @@ namespace Oceana
         private MeshResolution m_Resolution = MeshResolution.res_128x128;
         [SerializeField]
         private float m_MeshScale = 2000f;
+        [SerializeField]
+        private float m_MeshYBound = 20f;
 
         [SerializeField, Range(0f, 1f)]
         private float m_DisplaceStrength = 1f;
@@ -65,7 +67,7 @@ namespace Oceana
             mesh.SetTriangles(triangles, 0);
             mesh.SetUVs(0, uvs);
 
-            mesh.RecalculateBounds();
+            mesh.bounds = new Bounds(Vector3.zero, new Vector3(m_MeshScale, Mathf.Max(m_MeshYBound, 1), m_MeshScale));
             mesh.RecalculateNormals();
 
 
