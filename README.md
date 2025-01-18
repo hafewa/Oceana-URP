@@ -31,6 +31,6 @@ Solution requiers:
 
 IMPORTANT NOTES: 
 - For rendering ocean surface correctly toggles "Depth Texture" & "Opaque Texture" in URP Asset must be enabled.
-- For rendering post processing toggle "Deferred render path" in URP renderer must be enabled.
+- For rendering post processing toggle "Deferred render path" and select After Transparent Depth Texture in URP renderer.
 
 If there will be any issues or bugs found in this asset, report them to this e-mail: mitrofan3452@gmail.com
